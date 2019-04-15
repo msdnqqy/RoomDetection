@@ -13,7 +13,7 @@ import cv2
 import pandas as pd
 
 class Load_data:
-    def __init__(self,datasize=10000,testsize=2000):
+    def __init__(self,datasize=5000,testsize=1000):
         self.datasize=datasize
         self.testsize = testsize
         self.dataset=self.get_all_image_info()
@@ -30,7 +30,7 @@ class Load_data:
         for item in constants.CLASS_CATEGORY:
             image_items=filestools.get_files_of_folder(item['path'])
             print('image_items.shape',image_items.shape,'\t folder:',item['path'])
-            indexs=np.random.randint(0,len(image_items),size=(self.datasize+self.testsize))
+            indexs=np.random.randint(0,len(image_items),size=(self.datasize+self.testsize) if item['label']==0 else (self.datasize+self.testsize))
             image_items_result=image_items[indexs]
             for image_item in image_items_result:
                 image_item['label']=item['label']
@@ -46,9 +46,9 @@ class Load_data:
     def next_batch(self,batch_size=50):
         max=int(self.datasize/batch_size)-1
         begin=self.next_index%max*batch_size
-        print('begin:',begin,'\tend:',begin+batch_size,'\tself.dataset.shape',self.dataset.shape)
+        # print('begin:',begin,'\tend:',begin+batch_size,'\tself.dataset.shape',self.dataset.shape)
         batch_data_items=self.dataset[begin:begin+batch_size]
-        next_index=self.next_index+1
+        self.next_index+=1
         return self.load_dataset(batch_data_items)
 
 
@@ -71,8 +71,8 @@ class Load_data:
         for image_item in batch_data_items:
             # print(image_item)
             image = cv2.imread(image_item['path'])
-            label = np.zeros(shape=len(constants.CLASS_CATEGORY), dtype=np.int)
-            label[image_item['label']] = 1
+            label = np.zeros(shape=len(constants.CLASS_CATEGORY), dtype=np.float32)
+            label[image_item['label']] = 1.0
             images.append(image)
             labels.append(label)
 
@@ -80,7 +80,12 @@ class Load_data:
         labels_result = np.array(labels)
         return images_result, labels_result
 
-
+    """
+    预处理
+    """
+    def normalize(self,images):
+        image_nor=images.astype(np.float32)/255.0
+        return image_nor
 
 if __name__=='__main__':
     load_data=Load_data()

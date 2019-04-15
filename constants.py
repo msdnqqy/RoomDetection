@@ -18,8 +18,10 @@ DEFAULT_VIDEO_TEST_PATH=ROOT_PATH+r'dataset/video/1.mp4'
 DEFAULT_IMAGE_TEST_PATH=ROOT_PATH+r'dataset/images/0'
 
 CLASSNUM=3
+
 CLASS_CATEGORY=[
     {'name':'背景','label':0,'path':r'{0}/{1}'.format(DEFAULT_IMAGE_ROOT_PATH,0)},
     {'name':'积木','label':1,'path':r'{0}/{1}'.format(DEFAULT_IMAGE_ROOT_PATH,1)},
     {'name':'智能车','label':2,'path':r'{0}/{1}'.format(DEFAULT_IMAGE_ROOT_PATH,2)},
 ]
+

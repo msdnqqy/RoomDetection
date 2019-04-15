@@ -23,7 +23,7 @@ class ReadVideoToImgs(object):
                 #保存读取到的视频帧
 
                 #图片缩放为224*224
-                center_frame=cv2.resize(frame,shape, interpolation=cv2.INTER_CUBIC)
+                center_frame=cv2.resize(frame,shape)
                 cv2.imshow('center_frame', center_frame)
                 cv2.imwrite(r'{0}/{1}/{2}.jpg'.format(self.outpath,self.label,self.count),center_frame)
                 self.count += 1
@@ -42,5 +42,5 @@ if __name__=='__main__':
     for i in range(constants.CLASSNUM):
         readVideoToImgs=ReadVideoToImgs(path=r'{0}/{1}.mp4'.format(constants.DEFAULT_VIDEO_PATH,i)
                                                                     ,label=i)
-        readVideoToImgs.readvideo_saveas_imgs_with_shape()
+        readVideoToImgs.readvideo_saveas_imgs_with_shape((28,28))
         print('已完成：',i)
