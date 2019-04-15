@@ -1,7 +1,8 @@
-import model.network_small as Net
+import model.network_large as Net
 import tensorflow as tf
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 class Detection:
     def __init__(self):
@@ -17,7 +18,7 @@ class Detection:
     """
     测试
     """
-    def test(self,shape=(1280,1280),testimage_path=r'./45.jpg'):
+    def test(self,shape=(227*6,227*6),testimage_path=r'./4.jpg'):
         self.testimage_path = testimage_path
         print('path:',self.testimage_path,'\tshape:',shape)
         image=cv2.imread(self.testimage_path)
@@ -29,29 +30,15 @@ class Detection:
         result_grid = result.argmax(axis=3)[0].astype(np.int)
         result_grid1 = result.max(axis=3)[0]
 
-        x = []
-        y = []
-        c = []
-        d = []
-        for i in range(result_grid.shape[0]):
-            for j in range(result_grid.shape[1]):
-                x.append(i)
-                y.append(j)
-
-                if result_grid[i, j] == 0:
-                    c.append('green')
-                elif result_grid[i, j] == 1:
-                    c.append('yellow')
-                elif result_grid[i, j] == 2:
-                    c.append('red')
-
-                d.append(result_grid1[i, j])
-                # c.append(result_grid[i, j])
-
-        import matplotlib.pyplot as plt
-        plt.figure()
-        plt.scatter(x, y, c=c)
+        plt.subplot(2,2,1)
+        # plt.scatter(x, y, c=c)
+        plt.imshow(result_grid)
+        plt.subplot(2,2, 2)
+        plt.imshow(result_grid1)
+        plt.subplot(2, 2, 3)
+        plt.imshow(image_t_max)
         plt.show()
+
 
         return result,result_grid,result_grid1
 

@@ -42,5 +42,5 @@ if __name__=='__main__':
     for i in range(constants.CLASSNUM):
         readVideoToImgs=ReadVideoToImgs(path=r'{0}/{1}.mp4'.format(constants.DEFAULT_VIDEO_PATH,i)
                                                                     ,label=i)
-        readVideoToImgs.readvideo_saveas_imgs_with_shape((28,28))
+        readVideoToImgs.readvideo_saveas_imgs_with_shape((227,227))
         print('已完成：',i)
